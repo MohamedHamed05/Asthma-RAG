@@ -57,6 +57,83 @@ uv run python -m asthma_rag.ui.app
 
 Then open the printed local URL and ask a question.
 
+## Running the Full Application
+
+### 1) Backend setup
+
+```bash
+uv sync
+cp .env.example .env
+```
+
+Edit `.env` and set your real keys and backend settings.
+
+### 2) Required environment variables / API keys
+
+- `GROQ_API_KEY` (required)
+- `COHERE_API_KEY` (required)
+- `EMBEDDING_BACKEND` (`local` or `ollama`)
+- `OLLAMA_BASE_URL` (required when `EMBEDDING_BACKEND=ollama`)
+- `OLLAMA_EMBEDDING_MODEL` (required when `EMBEDDING_BACKEND=ollama`)
+- `GROQ_MODEL` (optional override)
+- `HF_HOME` (optional cache location)
+- `CORS_ALLOW_ORIGINS` (optional comma-separated frontend origins for FastAPI)
+
+### 3) Build or refresh the vector index
+
+```bash
+uv run python scripts/run_pipeline.py --pdf-dir data/raw --chroma-path chroma_db
+```
+
+### 4) Start the FastAPI backend
+
+```bash
+uv run uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+Backend API base URL: `http://127.0.0.1:8000`
+
+### 5) Start the frontend
+
+Use your existing frontend files and run a local web server for them (example for static HTML):
+
+```bash
+cd /path/to/your/frontend
+python -m http.server 5500
+```
+
+### 6) Which URL to open
+
+- Open frontend URL: `http://127.0.0.1:5500`
+- Frontend sends requests to: `http://127.0.0.1:8000/api/ask`
+
+### 7) Frontend ↔ backend communication
+
+- Method: `POST`
+- Endpoint: `/api/ask`
+- Request JSON:
+  - `question` (string)
+- Response JSON:
+  - `answer` (string; LLM output from real RAG pipeline)
+  - `citations` (string array; parsed from answer Sources bullets)
+  - `route` (string or null; `retrieve` or `inhaler`)
+  - `video_html` (string or null; populated for inhaler route)
+
+### 8) Example test question
+
+`What is the first-line controller therapy for asthma?`
+
+Expected response shape:
+
+```json
+{
+  "answer": "...",
+  "citations": ["..."],
+  "route": "retrieve",
+  "video_html": ""
+}
+```
+
 ### 4. Run tests
 
 ```bash
