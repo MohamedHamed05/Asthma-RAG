@@ -1,0 +1,83 @@
+# Authoritative asthma sources registry.
+# `fetch: true`  -> open-access, safe to download and index.
+# `fetch: false` -> rights-reserved or paywalled; cite-only, do not download.
+- id: gina_2026
+  title: GINA 2026 Strategy Report
+  publisher: Global Initiative for Asthma (GINA)
+  year: 2026
+  url: https://ginasthma.org/wp-content/uploads/2026/05/GINA-2026-Strategy-Report-WMS.pdf
+  license: open-access
+  fetch: true
+  note: null
+
+- id: nhlbi_2020
+  title: NHLBI Asthma Management Guidelines (EPR-3 full report)
+  publisher: National Heart, Lung, and Blood Institute (NHLBI)
+  year: 2020
+  url: https://www.nhlbi.nih.gov/sites/default/files/publications/AsthmaManagementGuidelinesReport-2-4-21.pdf
+  license: open-access
+  fetch: true
+  note: null
+
+- id: nhlbi_focused_2020
+  title: NHLBI 2020 Focused Updates to the Asthma Management Guidelines
+  publisher: National Heart, Lung, and Blood Institute (NHLBI)
+  year: 2020
+  url: https://www.nhlbi.nih.gov/resources/2020-focused-updates-asthma-management-guidelines
+  license: open-access
+  fetch: true
+  note: null
+
+- id: who_2026
+  title: WHO Consolidated Guidelines for the Management of Common Childhood Illness - Management of Asthma in Children and Adolescents
+  publisher: World Health Organization (WHO)
+  year: 2026
+  url: https://www.who.int/publications/i/item/9789240122680
+  license: CC BY-NC-SA 3.0 IGO
+  fetch: true
+  note: Non-commercial licence - do not use for commercial purposes.
+
+- id: nice_ng245
+  title: "NICE NG245 - Asthma: Diagnosis, Monitoring and Chronic Asthma Management"
+  publisher: National Institute for Health and Care Excellence (NICE)
+  year: 2024
+  url: https://www.nice.org.uk/guidance/ng245
+  license: UK Open Government Licence v3.0
+  fetch: true
+  note: null
+
+- id: bts_sign_158
+  title: BTS/SIGN British Guideline on the Management of Asthma (SIGN 158)
+  publisher: British Thoracic Society / Scottish Intercollegiate Guidelines Network
+  year: 2019
+  url: https://www.sign.ac.uk/our-guidelines/british-guideline-on-the-management-of-asthma/
+  license: open-access
+  fetch: true
+  note: Chronic asthma sections superseded by NICE NG245.
+
+- id: ats_ers_severe_2014
+  title: An Official ATS/ERS Statement - Severe Asthma Guidelines
+  publisher: American Thoracic Society / European Respiratory Society
+  year: 2014
+  url: https://www.thoracic.org/statements/resources/allergy-asthma/Severe-Asthma-CPG-ERJ.pdf
+  license: open-access
+  fetch: true
+  note: null
+
+- id: ers_ats_severe_2020
+  title: International ERS/ATS Guidelines on Definition, Evaluation and Treatment of Severe Asthma
+  publisher: European Respiratory Society / American Thoracic Society
+  year: 2020
+  url: https://erj.ersjournals.com/content/55/6/1900588
+  license: open-access page (ERJ full text paywalled)
+  fetch: false
+  note: Cite-only - ERJ full text is paywalled; only the abstract page is open.
+
+- id: global_asthma_report_2022
+  title: The Global Asthma Report 2022
+  publisher: Global Asthma Network
+  year: 2022
+  url: https://www.globalasthmareport.org/resources/Global_Asthma_Report_2022.pdf
+  license: all-rights-reserved
+  fetch: false
+  note: Cite-only - all rights reserved; do not download or index.

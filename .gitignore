@@ -1,0 +1,53 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.eggs/
+*.manifest
+*.spec
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Virtual environments
+.venv
+
+# uv
+.uv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Source data (never commit PDFs)
+data/raw/
+*.pdf
+
+# Source archive (contains the raw PDFs)
+hackathon.zip
+
+# Generated pipeline data (derived from copyrighted source PDFs)
+data/chunks/
+data/cleaned/
+chunks*.json
+
+# Generated vector store
+chroma_db/
+
+# Tooling
+.omo/
+.codegraph/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
