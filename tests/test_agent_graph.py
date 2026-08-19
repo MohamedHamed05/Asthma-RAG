@@ -112,6 +112,34 @@ def _patch_complete(monkeypatch: pytest.MonkeyPatch, response: str) -> None:
     monkeypatch.setattr(GroqChat, "complete", _complete)
 
 
+def _patch_verifier(monkeypatch: pytest.MonkeyPatch, in_scope: bool = True) -> None:
+    """Stub the entry verifier so tests control scope without an LLM call."""
+    from asthma_rag.agent import graph as graph_module
+
+    monkeypatch.setattr(
+        graph_module,
+        "verifier_node",
+        lambda _state: {"verifier_result": {"in_scope": in_scope, "reason": "test"}},
+    )
+
+
+def _patch_judge(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Stub the judge to a no-op approve so final_answer is unchanged."""
+    from asthma_rag.agent import graph as graph_module
+
+    monkeypatch.setattr(
+        graph_module,
+        "judge_node",
+        lambda _state: {
+            "judge_result": {
+                "verdict": "approve",
+                "reason": "test",
+                "confidence": "High",
+            }
+        },
+    )
+
+
 # ---------------------------------------------------------------------------
 # Inhaler branch
 # ---------------------------------------------------------------------------
@@ -125,6 +153,8 @@ class TestInhalerBranch:
     ) -> None:
         """Given an inhaler technique query, when invoking the graph, then it produces a video iframe answer."""
         _patch_settings(monkeypatch)
+        _patch_verifier(monkeypatch)
+        _patch_judge(monkeypatch)
         from asthma_rag.agent.graph import build_graph
 
         graph = build_graph()
@@ -151,6 +181,8 @@ class TestRetrievalBranch:
     ) -> None:
         """Given a definition query with passing grades, when invoking the graph, then it generates a sourced answer."""
         _patch_settings(monkeypatch)
+        _patch_verifier(monkeypatch)
+        _patch_judge(monkeypatch)
         _patch_retrieval(monkeypatch, RETRIEVED_FIVE)
         _patch_grades(monkeypatch, [[True, True, True, False, False]])
         _patch_complete(
@@ -173,6 +205,8 @@ class TestRetrievalBranch:
     ) -> None:
         """Given a query with zero relevant chunks, when invoking the graph, then it returns the safe fallback."""
         _patch_settings(monkeypatch)
+        _patch_verifier(monkeypatch)
+        _patch_judge(monkeypatch)
         _patch_retrieval(monkeypatch, RETRIEVED_FIVE)
         _patch_grades(monkeypatch, [[False, False, False, False, False]])
         from asthma_rag.agent.graph import build_graph
@@ -192,6 +226,8 @@ class TestRetrievalBranch:
     ) -> None:
         """Given a query that grades rewrite then pass, when invoking the graph, then it rewrites once and generates an answer."""
         _patch_settings(monkeypatch)
+        _patch_verifier(monkeypatch)
+        _patch_judge(monkeypatch)
         _patch_retrieval(monkeypatch, RETRIEVED_FIVE)
         _patch_grades(monkeypatch, [
             [True, False, False, False, False],  # rewrite

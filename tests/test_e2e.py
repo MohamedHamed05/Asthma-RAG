@@ -80,6 +80,34 @@ def _patch_answer(monkeypatch: pytest.MonkeyPatch, answer: str) -> None:
     monkeypatch.setattr(GroqChat, "complete", _complete)
 
 
+def _patch_verifier(monkeypatch: pytest.MonkeyPatch, in_scope: bool = True) -> None:
+    """Stub the entry verifier so tests control scope without an LLM call."""
+    from asthma_rag.agent import graph as graph_module
+
+    monkeypatch.setattr(
+        graph_module,
+        "verifier_node",
+        lambda _state: {"verifier_result": {"in_scope": in_scope, "reason": "test"}},
+    )
+
+
+def _patch_judge(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Stub the judge to a no-op approve so final_answer is unchanged."""
+    from asthma_rag.agent import graph as graph_module
+
+    monkeypatch.setattr(
+        graph_module,
+        "judge_node",
+        lambda _state: {
+            "judge_result": {
+                "verdict": "approve",
+                "reason": "test",
+                "confidence": "High",
+            }
+        },
+    )
+
+
 _RETRIEVED_FIVE: dict[str, Any] = {
     "ids": [["c1", "c2", "c3", "c4", "c5"]],
     "documents": [[
@@ -136,6 +164,8 @@ def test_happy_path_definition_question_returns_sourced_answer(
 ) -> None:
     """Scenario 1: definition question with passing grades produces a sourced answer."""
     _patch_settings(monkeypatch)
+    _patch_verifier(monkeypatch)
+    _patch_judge(monkeypatch)
     _patch_retrieval(monkeypatch, _RETRIEVED_FIVE)
     _patch_grades(monkeypatch, [[True, True, True, False, False]])
     _patch_answer(
@@ -161,6 +191,8 @@ def test_inhaler_query_returns_video_and_explanation(
 ) -> None:
     """Scenario 2: inhaler-technique query routes directly to the video answer."""
     _patch_settings(monkeypatch)
+    _patch_verifier(monkeypatch)
+    _patch_judge(monkeypatch)
 
     pipeline = Pipeline(settings=Settings(chroma_path=tmp_path / "chroma"))
     result = pipeline.query("How do I use my inhaler?")
@@ -179,6 +211,8 @@ def test_insufficient_evidence_returns_safe_fallback(
 ) -> None:
     """Scenario 3: no relevant chunks triggers the safe fallback answer."""
     _patch_settings(monkeypatch)
+    _patch_verifier(monkeypatch)
+    _patch_judge(monkeypatch)
     _patch_retrieval(monkeypatch, _RETRIEVED_FIVE)
     _patch_grades(monkeypatch, [[False, False, False, False, False]])
 

@@ -86,6 +86,23 @@ def _patch_graph(
 
     monkeypatch.setattr(GroqChat, "complete", _complete)
 
+    monkeypatch.setattr(
+        graph_module,
+        "verifier_node",
+        lambda _state: {"verifier_result": {"in_scope": True, "reason": "test"}},
+    )
+    monkeypatch.setattr(
+        graph_module,
+        "judge_node",
+        lambda _state: {
+            "judge_result": {
+                "verdict": "approve",
+                "reason": "test",
+                "confidence": "High",
+            }
+        },
+    )
+
 
 def test_ingest_writes_chunks_json(
     tmp_path: Path,

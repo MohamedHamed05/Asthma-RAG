@@ -20,6 +20,26 @@ class Settings(BaseSettings):
     # API keys
     groq_api_key: str = ""
     cohere_api_key: str = ""
+    exa_api_key: str = ""
+
+    # Langfuse observability
+    langfuse_public_key: str = ""
+    langfuse_secret_key: str = ""
+    langfuse_base_url: str = ""
+    langfuse_tracing_enabled: bool = True
+
+    # Agent role models
+    verifier_model: str = "openai/gpt-oss-20b"
+    judge_model: str = "openai/gpt-oss-120b"
+
+    # Groq audio
+    stt_model: str = "whisper-large-v3-turbo"
+    tts_model: str = "canopylabs/orpheus-v1-english"
+    tts_voice: str = "troy"
+
+    # Web search tuning
+    search_max_results: int = 5
+    search_max_age_hours: int = 24
 
     # Optional HuggingFace cache override
     hf_home: Path | None = None
