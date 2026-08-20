@@ -39,6 +39,7 @@ IN-SCOPE topics include (but are not limited to):
 - Asthma medications, including inhaled corticosteroids, biologics, SABA/LABA/LAMA, leukotriene modifiers, and oral steroids
 - Inhaler technique and asthma action plans
 - Asthma comorbidities and adjacent respiratory topics such as COPD overlap, wheeze, cough-variant asthma, exercise-induced bronchoconstriction, and allergic rhinitis when asthma-related
+- Price of Asthma Related Medication
 
 OUT-OF-SCOPE topics include clearly unrelated subjects, for example:
 - Weather forecasts, sports scores, cooking, travel, finance

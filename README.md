@@ -49,7 +49,20 @@ Embeddings run on a GPU Ollama server when `EMBEDDING_BACKEND=ollama` is set in 
 uv run python scripts/ask.py "What is asthma?"
 ```
 
-### 3. Launch the Gradio UI
+### 3. Launch a UI
+
+**Aspira — custom web UI (recommended).** A production-styled chat interface
+(FastAPI backend + static frontend) that surfaces sources, judge confidence,
+routing, the inhaler video, and voice I/O:
+
+```bash
+uv run uvicorn asthma_rag.ui.server:app --reload --port 8000
+```
+
+Then open http://127.0.0.1:8000. The `/api/health` endpoint reports which
+API keys are missing if the status pill shows a warning.
+
+**Gradio UI (original).** Still available unchanged:
 
 ```bash
 uv run python -m asthma_rag.ui.app
@@ -71,7 +84,7 @@ src/asthma_rag/
   llm/             # Groq chat client
   rerank/          # Cohere rerank wrapper
   agent/           # LangGraph state, nodes, and graph wiring
-  ui/              # Gradio app + YouTube embed helper
+  ui/              # Gradio app, FastAPI web app (server.py + web/), YouTube embed helper
   config.py        # Environment-driven settings
   embeddings.py    # Local embedding factory
   ingest.py        # PDF → chunks CLI

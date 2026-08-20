@@ -9,6 +9,7 @@ the configured ``EXA_API_KEY``. Used by the LangGraph search / video nodes.
 from __future__ import annotations
 
 import re
+from datetime import datetime, timedelta, timezone
 from typing import Any, Protocol, TypedDict
 
 from asthma_rag.config import get_settings
@@ -93,12 +94,16 @@ class SearchClient:
     def search_prices(self, query: str) -> list[SearchHit]:
         """Search EXA for asthma-drug price information, scoped to Egypt."""
         settings = get_settings()
+        # Compute the cutoff date for freshness (max_age_hours ago)
+        cutoff_date = datetime.now(timezone.utc) - timedelta(hours=settings.search_max_age_hours)
+        start_published_date = cutoff_date.isoformat(timespec="seconds")  # e.g., "2026-08-19T00:00:00"
+
         response = self._transport.search(
             query=query,
             num_results=settings.search_max_results,
             user_location="EG",
             contents={"text": {"max_characters": 2000}},
-            max_age_hours=settings.search_max_age_hours,
+            start_published_date=start_published_date,   # <-- freshness filter
         )
         return [_to_hit(r) for r in getattr(response, "results", [])]
 
